@@ -5,15 +5,15 @@ import org.openqa.selenium.By;
 
 import java.util.List;
 
-public class SearchPageObject extends MainPageObject
+abstract public class SearchPageObject extends MainPageObject
 {
-    private static final String
+    protected static String
 
-    SEARCH_INIT_ELEMENT = "xpath://*[contains(@text, 'Search Wikipedia')]",
-    SEARCH_INPUT = "xpath://*[@resource-id='org.wikipedia:id/search_src_text']",
-    SEARCH_CANCEL_BUTTON = "id:org.wikipedia:id/search_close_btn",
-    SEARCH_RESULT_BY_SUBSTRING_TPL = "xpath://*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='{SUBSTRING}']",
-    SEARCH_RESULT_ELEMENT = "xpath://*[@resource-id='org.wikipedia:id/page_list_item_title']";
+    SEARCH_INIT_ELEMENT,
+    SEARCH_INPUT,
+    SEARCH_CANCEL_BUTTON,
+    SEARCH_RESULT_BY_SUBSTRING_TPL,
+    SEARCH_RESULT_ELEMENT;
 
     public SearchPageObject(AppiumDriver driver)
     {

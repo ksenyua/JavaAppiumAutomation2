@@ -1,20 +1,25 @@
 package tests;
 
 import lib.CoreTestCase;
+import lib.Platform;
 import lib.ui.ArticlePageObject;
 import lib.ui.MyListsPageObject;
 import lib.ui.NavigationUI;
 import lib.ui.SearchPageObject;
+import lib.ui.factories.ArticlePageObjectFactory;
+import lib.ui.factories.MyListsPageObjectFactory;
+import lib.ui.factories.NavigationUIFactory;
+import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 
 public class MyListsTests extends CoreTestCase {
 
+    String name_of_folder = "Learning programming";
+
     @Test
     public void testSaveTwoArticleAndDeleteOne()
     {
-        NavigationUI NavigationUI = new NavigationUI(driver);
-        NavigationUI.click_button_skip();
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         String title_article_one = "British journalist";
         String title_article_two = "British archaeologist";
         String name_of_folder = "British famous people";
@@ -23,7 +28,7 @@ public class MyListsTests extends CoreTestCase {
         SearchPageObject.typeSearchLine("Dilys Powell");
         SearchPageObject.clickByArticleWithSubstring(title_article_one);
 
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         ArticlePageObject.waitForTitleElement();
 
         ArticlePageObject.addArticleToMyList(name_of_folder);
@@ -37,9 +42,9 @@ public class MyListsTests extends CoreTestCase {
         ArticlePageObject.addArticleToMyListToFolderByName(name_of_folder);
         ArticlePageObject.closeArticle();
 
-        NavigationUI.clickMyLists();
+        //NavigationUI.clickMyLists();
 
-        MyListsPageObject MyListsPageObject = new MyListsPageObject(driver);
+        MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
         MyListsPageObject.openFolderByName(name_of_folder);
         MyListsPageObject.swipeByArticleToDelete(title_article_one);
 

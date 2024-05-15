@@ -1,16 +1,19 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-public class MyListsPageObject extends MainPageObject{
+abstract public class MyListsPageObject extends MainPageObject{
 
-    private static final String
-            FOLDER_BY_NAME_TPL = "xpath://*[@text='{FOLDER_NAME}']",
-            ARTICLE_BY_TITLE_TPL = "xpath://*[@text='{TITLE}']",
-            TITLE_ARTICLE = "id:org.wikipedia:id/page_list_item_title";
+    protected static String
 
+            FOLDER_BY_NAME_TPL,
+            TITLE_ARTICLE,
+            ARTICLE_BY_TITLE_TPL,
+            CLOSE_SYNC_POPUP,
+            SWIPE_ACTION_DELETE_BUTTON;
 
     public MyListsPageObject(AppiumDriver driver)
     {
@@ -56,7 +59,23 @@ public class MyListsPageObject extends MainPageObject{
                 article_xpath,
                 "Cannot find saved article"
         );
+        if (Platform.getInstance().isIOS()) {
+            this.clickElementToTheRightUpperCorner(article_xpath, "Cannot find saved article");
+            this.waitForElementAndClick(
+                    SWIPE_ACTION_DELETE_BUTTON,
+                    "Cannot find and click delete button",
+                    10
+            );
+        }
         this.waitForArticleDisappearByTitle(article_xpath);
+    }
+
+    public void closeSyncPopup() {
+        this.waitForElementAndClick(
+                CLOSE_SYNC_POPUP,
+                "Cannot close sync popup",
+                5
+        );
     }
 
     public void clickArticleByTitle(String substring) {
