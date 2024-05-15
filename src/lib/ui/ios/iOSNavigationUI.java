@@ -6,8 +6,7 @@ import lib.ui.NavigationUI;
 public class iOSNavigationUI extends NavigationUI {
     static {
         MY_LIST_LINK = "id:Saved";
-       // HOME_LINK = "xpath://XCUIElementTypeNavigationBar[@name=\"W\"]";
-
+        CLOSE_BUTTON_POPUP = "id:Close";
     }
 
     public iOSNavigationUI(AppiumDriver driver) {

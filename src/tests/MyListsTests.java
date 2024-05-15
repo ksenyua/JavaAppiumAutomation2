@@ -23,41 +23,71 @@ public class MyListsTests extends CoreTestCase {
         String title_article_one = "British journalist";
         String title_article_two = "British archaeologist";
         String name_of_folder = "British famous people";
+        String search_line_find_one = "Dilys Powell";
+        String search_line_find_two = "Humfry Payone";
 
         SearchPageObject.initSearchInput();
-        SearchPageObject.typeSearchLine("Dilys Powell");
-        SearchPageObject.clickByArticleWithSubstring(title_article_one);
+        SearchPageObject.typeSearchLine(search_line_find_one);
+        if(Platform.getInstance().isAndroid()) {
+            SearchPageObject.clickByArticleWithSubstring(title_article_one);
+        } else {
+            SearchPageObject.clickByArticleWithSubstring(search_line_find_one);
+        }
 
         ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         ArticlePageObject.waitForTitleElement();
 
-        ArticlePageObject.addArticleToMyList(name_of_folder);
+        if (Platform.getInstance().isAndroid()){
+            ArticlePageObject.addArticleToMyList(name_of_folder);
+        } else {
+            ArticlePageObject.addArticleToMySaved();
+        }
         ArticlePageObject.closeArticle();
+        if(Platform.getInstance().isIOS()){
+            SearchPageObject.clickCancelSearch();
+        }
 
         SearchPageObject.initSearchInput();
-        SearchPageObject.typeSearchLine("Humfry Payone");
+        SearchPageObject.typeSearchLine(search_line_find_two);
         SearchPageObject.clickByArticleWithSubstring(title_article_two);
         ArticlePageObject.waitForTitleElement();
 
-        ArticlePageObject.addArticleToMyListToFolderByName(name_of_folder);
+        if (Platform.getInstance().isAndroid()){
+            ArticlePageObject.addArticleToMyList(name_of_folder);
+        } else {
+            ArticlePageObject.addArticleToMySaved();
+        }
         ArticlePageObject.closeArticle();
 
-        //NavigationUI.clickMyLists();
+        if(Platform.getInstance().isIOS()){
+            SearchPageObject.clickCancelSearch();
+        }
 
+        NavigationUI NavigationUI = NavigationUIFactory.get(driver);
+        NavigationUI.clickMyLists();
+
+        if(Platform.getInstance().isIOS()){
+            NavigationUI.clickCloseButtonOnPopup();
+        }
         MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
-        MyListsPageObject.openFolderByName(name_of_folder);
-        MyListsPageObject.swipeByArticleToDelete(title_article_one);
-
-        MyListsPageObject.waitForArticleAppearByTitle(title_article_two);
+        if (Platform.getInstance().isAndroid()){
+            MyListsPageObject.openFolderByName(name_of_folder);
+        }
+        MyListsPageObject.swipeByArticleToDelete(title_article_two);
+        MyListsPageObject.waitForArticleAppearByTitle(title_article_one);
+        if(Platform.getInstance().isAndroid()){
         String title_expected = MyListsPageObject.getArticleTitleMyList();
-        MyListsPageObject.clickArticleByTitle(title_article_two);
+        MyListsPageObject.clickArticleByTitle(title_article_one);
 
         String title_result = ArticlePageObject.getArticleTitle();
         assertEquals(
                 "Article title " + title_result + "cannot expected",
                 title_expected,
                 title_result
-        );
+        );}
+        else {
+            MyListsPageObject.checkRightArticleWasDeleted();
+        }
     }
 }
 

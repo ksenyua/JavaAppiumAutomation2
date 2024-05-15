@@ -2,7 +2,6 @@ package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import lib.Platform;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 abstract public class MyListsPageObject extends MainPageObject{
@@ -13,6 +12,7 @@ abstract public class MyListsPageObject extends MainPageObject{
             TITLE_ARTICLE,
             ARTICLE_BY_TITLE_TPL,
             CLOSE_SYNC_POPUP,
+            DELETE_ARTICLE,
             SWIPE_ACTION_DELETE_BUTTON;
 
     public MyListsPageObject(AppiumDriver driver)
@@ -93,6 +93,11 @@ abstract public class MyListsPageObject extends MainPageObject{
     public WebElement waitForTitleElementMyList()
     {
         return this.waitForElementPresent(TITLE_ARTICLE, "Cannot find article on page", 15);
+    }
+
+    public void checkRightArticleWasDeleted()
+    {
+        this.waitForElementNotPresent(DELETE_ARTICLE, "Wrong article was deleted",5);
     }
 }
 
